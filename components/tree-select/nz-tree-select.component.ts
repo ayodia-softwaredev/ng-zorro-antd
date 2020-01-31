@@ -49,7 +49,11 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions,
-  WithConfig
+  WithConfig,
+  NzTreeFilterOption,
+  NzHighlightFunc,
+  nzTreeDefaultHighlightFunc,
+  nzTreeDefaultFilterOption
 } from 'ng-zorro-antd/core';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -123,6 +127,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [key: string]: string };
+  @Input() nzFilterOption: NzTreeFilterOption = nzTreeDefaultFilterOption;
+  @Input() nzHighlightFunc: NzHighlightFunc = nzTreeDefaultHighlightFunc;
+
   /**
    * @deprecated 9.0.0 - use `nzExpandedKeys` instead.
    */
