@@ -27,13 +27,14 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import {
-  treeCollapseMotion,
-  warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBaseService,
-  NzTreeNode
+  NzTreeNode,
+  treeCollapseMotion,
+  warnDeprecation
 } from 'ng-zorro-antd/core';
 
 @Component({
@@ -63,6 +64,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
+  @Input() nzHighlightFunc: NzHighlightFunc;
 
   @Input()
   set nzDraggable(value: boolean) {

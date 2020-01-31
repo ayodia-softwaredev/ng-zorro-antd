@@ -7,12 +7,12 @@
  */
 
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
+  forwardRef,
   Host,
   Input,
   OnChanges,
@@ -29,26 +29,26 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
-  isNotNil,
-  warnDeprecation,
   InputBoolean,
+  isNotNil,
   NzConfigService,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
+  nzTreeDefaultHighlightFunc,
+  NzTreeFilterOption,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
+  warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
 
 import { NzTreeService } from './nz-tree.service';
 
-export function NzTreeServiceFactory(
-  higherOrderService: NzTreeBaseService,
-  treeService: NzTreeService
-): NzTreeBaseService {
+export function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, treeService: NzTreeService): NzTreeBaseService {
   return higherOrderService ? higherOrderService : treeService;
 }
 
@@ -180,6 +180,14 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   get nzSearchValue(): string {
     return this._searchValue;
   }
+
+  @Input()
+  set nzFilterOption(value: NzTreeFilterOption) {
+    this.nzTreeService.filterOption = value;
+  }
+
+  @Input()
+  nzHighlightFunc: NzHighlightFunc = nzTreeDefaultHighlightFunc;
 
   /**
    * To render nodes if root is changed.
