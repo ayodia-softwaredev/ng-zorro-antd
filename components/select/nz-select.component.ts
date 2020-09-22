@@ -154,6 +154,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.check();
   }
 
+  @Input() @InputBoolean()
+  set nzEnableHighlightOption(value: boolean) {
+    this.nzSelectService.enableHighlightOption = value;
+    this.nzSelectService.check();
+  }
+
   @Input()
   set nzFilterOption(value: TFilterOption) {
     this.nzSelectService.filterOption = value;

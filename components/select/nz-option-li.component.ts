@@ -46,6 +46,8 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
   active = false;
+  enableHightlightOption = false;
+  searchValue = '';
   destroy$ = new Subject();
   @Input() nzOption: NzOptionComponent;
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
@@ -76,6 +78,16 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
       }
       this.cdr.markForCheck();
     });
+    this.nzSelectService.searchValue$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      this.searchValue = value;
+    });
+    this.nzSelectService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.enableHightlightOption = this.nzSelectService.enableHighlightOption;
+    });
+  }
+
+  highlightOption(label: string): string | null {
+    return this.nzSelectService.highlightOptionLabel(this.searchValue, label);
   }
 
   ngOnDestroy(): void {

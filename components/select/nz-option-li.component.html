@@ -1,5 +1,10 @@
 <ng-container *ngIf="!nzOption.nzCustomContent; else nzOption.template">
-  {{nzOption.nzLabel}}
+  <ng-container *ngIf="!enableHightlightOption;">
+    {{nzOption.nzLabel}}
+  </ng-container>
+  <ng-container *ngIf="enableHightlightOption;">
+    <span [innerHTML]="highlightOption(nzOption.nzLabel)"> </span>
+  </ng-container>
 </ng-container>
 <ng-container *ngIf="nzSelectService.isMultipleOrTags">
   <i nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!nzMenuItemSelectedIcon; else nzMenuItemSelectedIcon"></i>

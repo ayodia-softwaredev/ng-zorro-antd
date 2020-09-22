@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
 import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
 
-import { isNil, isNotNil } from 'ng-zorro-antd/core';
+import { isNil, isNotNil, NzHighlightPipe } from 'ng-zorro-antd/core';
 
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
@@ -51,6 +51,7 @@ export class NzSelectService {
   clearInput$ = new Subject<boolean>();
   searchValue = '';
   isShowNotFound = false;
+  enableHighlightOption = false;
   /** animation event **/
   animationEvent$ = new Subject();
   /** open event **/
@@ -406,5 +407,14 @@ export class NzSelectService {
 
   get isMultipleOrTags(): boolean {
     return this.mode === 'tags' || this.mode === 'multiple';
+  }
+
+  highlightOptionLabel(inputValue: string, optionLabel: string): string | null {
+    const nzHighlightPipe = new NzHighlightPipe();
+    if (inputValue && optionLabel) {
+      return nzHighlightPipe.transform(optionLabel, inputValue, '', 'font-highlight');
+    } else {
+      return optionLabel;
+    }
   }
 }
