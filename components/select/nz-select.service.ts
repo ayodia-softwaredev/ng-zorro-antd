@@ -412,7 +412,7 @@ export class NzSelectService {
   highlightOptionLabel(inputValue: string, optionLabel: string): string | null {
     const nzHighlightPipe = new NzHighlightPipe();
     if (inputValue && optionLabel) {
-      return nzHighlightPipe.transform(optionLabel, inputValue, '', 'font-highlight');
+      return nzHighlightPipe.transform(optionLabel, inputValue, 'i', 'font-highlight');
     } else {
       return optionLabel;
     }
