@@ -1,9 +1,9 @@
 <ng-container *ngIf="!nzOption.nzCustomContent; else nzOption.template">
-  <ng-container *ngIf="!enableHightlightOption;">
-    {{nzOption.nzLabel}}
+  <ng-container *ngIf="nzSelectService.enableHighlightOption == true">
+    <span [innerHTML]="highlightOption(nzSelectService.searchValue,nzOption.nzLabel)"> </span>
   </ng-container>
-  <ng-container *ngIf="enableHightlightOption;">
-    <span [innerHTML]="highlightOption(nzOption.nzLabel)"> </span>
+  <ng-container *ngIf="nzSelectService.enableHighlightOption != true">
+    <span > {{nzOption.nzLabel}}</span>
   </ng-container>
 </ng-container>
 <ng-container *ngIf="nzSelectService.isMultipleOrTags">

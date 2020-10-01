@@ -80,9 +80,7 @@ export class NzSelectService {
     share(),
     tap(value => {
       this.searchValue = value;
-      if (value) {
-        this.updateActivatedOption(this.listOfFilteredOption[0]);
-      }
+      this.updateActivatedOption(this.listOfFilteredOption[0]);
       this.updateListOfFilteredOption();
     })
   );

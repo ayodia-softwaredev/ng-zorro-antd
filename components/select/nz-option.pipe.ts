@@ -53,3 +53,15 @@ export function defaultFilterOption(searchValue: string, option: NzOptionCompone
     return false;
   }
 }
+
+
+@Pipe({name: 'nzHighlightcharter'})
+export class NzHighlightcharterPipe implements PipeTransform {
+  transform(value: any, args: any,enableHightlightOption:boolean): any {
+    if (!args && enableHightlightOption == false) {
+      return value;
+    }
+    const replacedValue = value.replace(new RegExp(args, 'gi'), "<span class='font-highlight'>$&</span>");
+    return replacedValue;
+  }
+}

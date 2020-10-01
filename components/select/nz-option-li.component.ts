@@ -86,8 +86,8 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
     });
   }
 
-  highlightOption(label: string): string | null {
-    return this.nzSelectService.highlightOptionLabel(this.searchValue, label);
+  highlightOption(search :string,label: string): string | null {
+    return this.nzSelectService.highlightOptionLabel(search, label);
   }
 
   ngOnDestroy(): void {
