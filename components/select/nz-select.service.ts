@@ -116,6 +116,10 @@ export class NzSelectService {
       this.updateListOfFilteredOption();
       this.resetActivatedOptionIfNeeded();
       this.updateListOfCachedOption();
+      if(this.listOfFilteredOption.length > 0){
+        this.updateActivatedOption(this.listOfFilteredOption[0]);
+        this.updateListOfFilteredOption();
+      }
     }),
     share()
   );
