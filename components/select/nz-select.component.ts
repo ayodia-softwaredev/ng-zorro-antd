@@ -6,6 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -73,6 +81,7 @@ import { NzSelectService } from './nz-select.service';
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'open',
+    '[class.ant-select-focused]': 'open || focused',
     '(click)': 'toggleDropDown()'
   },
   styles: [
@@ -90,6 +99,7 @@ import { NzSelectService } from './nz-select.service';
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit {
   open = false;
+  focused = false;
   // tslint:disable-next-line:no-any
   value: any | any[];
   onChange: (value: string | string[]) => void = () => null;
@@ -154,7 +164,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.check();
   }
 
-  @Input() @InputBoolean()
+  @Input()
+  @InputBoolean()
   set nzEnableHighlightOption(value: boolean) {
     this.nzSelectService.enableHighlightOption = value;
     this.nzSelectService.check();
@@ -258,7 +269,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     public nzSelectService: NzSelectService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    elementRef: ElementRef,
+    private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-select');
@@ -294,6 +306,24 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnInit(): void {
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.focused = false;
+          this.cdr.markForCheck();
+          this.nzBlur.emit();
+          Promise.resolve().then(() => {
+            this.onTouched();
+          });
+        } else {
+          this.focused = true;
+          this.cdr.markForCheck();
+          this.nzFocus.emit();
+        }
+      });
+
     this.nzSelectService.animationEvent$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateCdkConnectedOverlayPositions());
