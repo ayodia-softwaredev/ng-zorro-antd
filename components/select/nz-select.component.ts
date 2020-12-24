@@ -321,6 +321,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           this.focused = true;
           this.cdr.markForCheck();
           this.nzFocus.emit();
+          if (this.nzShowSearch) {
+            this.nzSelectService.setOpenState(true);
+          }
         }
       });
 
