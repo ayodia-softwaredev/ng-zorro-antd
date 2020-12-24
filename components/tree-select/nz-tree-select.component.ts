@@ -6,6 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
@@ -36,24 +45,24 @@ import { filter, tap } from 'rxjs/operators';
 
 import {
   isNotNil,
+  nzTreeDefaultFilterOption,
+  nzTreeDefaultHighlightFunc,
   slideMotion,
   warnDeprecation,
   zoomMotion,
   InputBoolean,
   NzConfigService,
   NzFormatEmitEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzSizeLDSType,
   NzTreeBase,
   NzTreeBaseService,
+  NzTreeFilterOption,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions,
-  WithConfig,
-  NzTreeFilterOption,
-  NzHighlightFunc,
-  nzTreeDefaultHighlightFunc,
-  nzTreeDefaultFilterOption
+  WithConfig
 } from 'ng-zorro-antd/core';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -90,6 +99,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'treeSelect';
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
+    '[class.ant-select-focused]': 'nzOpen || focused',
     '(click)': 'trigger()'
   },
   styles: [
@@ -175,9 +185,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isComposing = false;
   isDestroy = true;
   isNotFound = false;
+  focused = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   selectionChangeSubscription: Subscription;
+  focusChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -224,6 +236,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
@@ -233,12 +246,26 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
+
+    this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        this.focused = false;
+        this.cdr.markForCheck();
+        Promise.resolve().then(() => {
+          this.onTouched();
+        });
+      } else {
+        this.focused = true;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
     this.selectionChangeSubscription.unsubscribe();
+    this.focusChangeSubscription.unsubscribe();
   }
 
   setDisabledState(isDisabled: boolean): void {
