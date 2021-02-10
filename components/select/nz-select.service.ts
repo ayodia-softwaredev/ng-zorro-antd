@@ -52,6 +52,7 @@ export class NzSelectService {
   searchValue = '';
   isShowNotFound = false;
   enableHighlightOption = false;
+  enableSortingSearchOption = false;
   /** animation event **/
   animationEvent$ = new Subject();
   /** open event **/
@@ -116,7 +117,7 @@ export class NzSelectService {
       this.updateListOfFilteredOption();
       this.resetActivatedOptionIfNeeded();
       this.updateListOfCachedOption();
-      if(this.listOfFilteredOption.length > 0){
+      if (this.listOfFilteredOption.length > 0) {
         this.updateActivatedOption(this.listOfFilteredOption[0]);
         this.updateListOfFilteredOption();
       }
@@ -418,5 +419,9 @@ export class NzSelectService {
     } else {
       return optionLabel;
     }
+  }
+
+  SortingIndexOption(searchValue: string, option: NzOptionComponent[]): NzOptionComponent[] {
+    return option.sort((a, b) => a.nzLabel.indexOf(searchValue) - b.nzLabel.indexOf(searchValue));
   }
 }

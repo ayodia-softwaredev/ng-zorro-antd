@@ -172,6 +172,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   @Input()
+  @InputBoolean()
+  set enableSortingSearchOption(value: boolean) {
+    this.nzSelectService.enableSortingSearchOption = value;
+    this.nzSelectService.check();
+  }
+
+  @Input()
   set nzFilterOption(value: TFilterOption) {
     this.nzSelectService.filterOption = value;
   }

@@ -6,6 +6,30 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -47,6 +71,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   selected = false;
   active = false;
   enableHightlightOption = false;
+  enableSortingSearchOption = false;
   searchValue = '';
   destroy$ = new Subject();
   @Input() nzOption: NzOptionComponent;
@@ -86,7 +111,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
     });
   }
 
-  highlightOption(search :string,label: string): string | null {
+  highlightOption(search: string, label: string): string | null {
     return this.nzSelectService.highlightOptionLabel(search, label);
   }
 

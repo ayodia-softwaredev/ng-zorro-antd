@@ -53,3 +53,19 @@ export function defaultFilterOption(searchValue: string, option: NzOptionCompone
     return false;
   }
 }
+
+@Pipe({ name: 'nzSortIndexOptionPipe' })
+export class NzSortIndexOptionPipe implements PipeTransform {
+  transform(
+    options: NzOptionComponent[],
+    searchValue: string,
+    enableSortingSearchOption: boolean,
+    serverSearch: boolean
+  ): NzOptionComponent[] {
+    if (!enableSortingSearchOption || serverSearch || !searchValue) {
+      return options;
+    } else {
+      return options.sort((a, b) => a.nzLabel.indexOf(searchValue) - b.nzLabel.indexOf(searchValue));
+    }
+  }
+}

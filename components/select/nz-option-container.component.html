@@ -12,7 +12,8 @@
     [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
     [nzOption]="nzSelectService.addedTagOption">
   </li>
-  <ng-container *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue">
+  <ng-container *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch 
+      | nzSortIndexOptionPipe: nzSelectService.searchValue : nzSelectService.enableSortingSearchOption : nzSelectService.serverSearch;">
     <li nz-option-li
       *ngIf="!option.nzHide"
       [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
@@ -36,7 +37,7 @@
     </ul>
   </li>
   <li nz-option-li
-    *ngFor="let option of nzSelectService.listOfTagOption | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue "
+    *ngFor="let option of nzSelectService.listOfTagOption | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue"
     [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
     [nzOption]="option">
   </li>
